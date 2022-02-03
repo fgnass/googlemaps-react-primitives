@@ -1,8 +1,21 @@
-# googlemaps-react-primitives
+# googlemaps-react-primitives 📍
+
+![screenshot](screenshot.png)
+
+## Rationale
 
 When looking for a way to add Google Maps to a React application you'll find [tons](https://www.npmjs.com/package/google-map-react) of [different](https://www.npmjs.com/package/react-google-maps) solutions and [libraries](https://www.npmjs.com/package/@react-google-maps/api).
 
 The idea behind this module is to stick to [Google's official guide for React](https://developers.google.com/maps/documentation/javascript/react-map) as close as possible and provide the missing bits and pieces.
+
+## Features
+
+- Written in TypeScript
+- Super lightweight
+- Tree shakeable
+- Works with @googlemaps/react-wrapper
+
+# Usage
 
 This basic example shows everything that's needed in order to display a Google Map with its default options:
 
@@ -106,7 +119,7 @@ function MyOverlay({ position, text }: Props) {
 
 **Note:** You can pass the `preventMapHits` property to stop clicks etc. from bubbling up to the map.
 
-## Auto Fit
+## Auto-fitting the map view
 
 When placing markers or overlays on the map you can pass the `autoFit` prop in order to automatically center and zoom the map so that all nested markers and overlays are visible in the initial viewport.
 
@@ -123,11 +136,11 @@ function MyMap() {
 }
 ```
 
-## Accessing the map
+## Accessing the map instance
 
 When you write custom components that need to access the map instance, you can use the `useMap()` hook.
 
-## View the example
+## Viewing the example
 
 When you check out the repository you can view the example using the following command:
 
