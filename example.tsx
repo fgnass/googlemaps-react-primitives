@@ -3,19 +3,241 @@ import ReactDOM from "react-dom";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { GoogleMap, Marker, Overlay } from "./src";
 
+const styles = [
+  {
+    featureType: "all",
+    elementType: "geometry",
+    stylers: [
+      {
+        color: "#f2f2f2",
+      },
+    ],
+  },
+  {
+    featureType: "all",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        gamma: 0.01,
+      },
+      {
+        lightness: 20,
+      },
+    ],
+  },
+  {
+    featureType: "all",
+    elementType: "labels.text.stroke",
+    stylers: [
+      {
+        saturation: -31,
+      },
+      {
+        lightness: -33,
+      },
+      {
+        weight: 2,
+      },
+      {
+        gamma: 0.8,
+      },
+    ],
+  },
+  {
+    featureType: "all",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "administrative",
+    elementType: "labels",
+    stylers: [
+      {
+        visibility: "on",
+      },
+      {
+        lightness: "14",
+      },
+    ],
+  },
+  {
+    featureType: "administrative",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#848484",
+      },
+    ],
+  },
+  {
+    featureType: "administrative",
+    elementType: "labels.text.stroke",
+    stylers: [
+      {
+        color: "#ffffff",
+      },
+    ],
+  },
+  {
+    featureType: "administrative",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "simplified",
+      },
+      {
+        color: "#b9b9b9",
+      },
+    ],
+  },
+  {
+    featureType: "poi",
+    elementType: "geometry",
+    stylers: [
+      {
+        visibility: "simplified",
+      },
+    ],
+  },
+  {
+    featureType: "poi",
+    elementType: "labels",
+    stylers: [
+      {
+        visibility: "off",
+      },
+      {
+        color: "#6d6d6d",
+      },
+    ],
+  },
+  {
+    featureType: "poi.park",
+    elementType: "labels",
+    stylers: [
+      {
+        visibility: "simplified",
+      },
+    ],
+  },
+  {
+    featureType: "poi.park",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "geometry",
+    stylers: [
+      {
+        visibility: "on",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "geometry.fill",
+    stylers: [
+      {
+        color: "#ffffff",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "geometry.stroke",
+    stylers: [
+      {
+        color: "#dfdfdf",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#9c9c9c",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text.stroke",
+    stylers: [
+      {
+        color: "#ffffff",
+      },
+    ],
+  },
+  {
+    featureType: "transit",
+    elementType: "all",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "water",
+    elementType: "all",
+    stylers: [
+      {
+        color: "#dedede",
+      },
+    ],
+  },
+  {
+    featureType: "water",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#9c9c9c",
+      },
+    ],
+  },
+  {
+    featureType: "water",
+    elementType: "labels.text.stroke",
+    stylers: [
+      {
+        color: "#ffffff",
+      },
+    ],
+  },
+];
+
 function renderLoadingStatus(status: Status) {
   return <h1>{status}</h1>;
 }
 
 function App() {
-  const [text, setText] = useState("Moin!");
   return (
     <div style={{ width: "80vw", margin: "10vh auto" }}>
       <Wrapper
         apiKey={import.meta.env.VITE_API_KEY}
         render={renderLoadingStatus}
       >
-        <GoogleMap style={{ height: "80vh", marginBottom: "1em" }} autoFit>
+        <GoogleMap
+          style={{ height: "80vh", marginBottom: "1em" }}
+          fullscreenControl={false}
+          mapTypeControl={false}
+          streetViewControl={false}
+          zoomControl={false}
+          keyboardShortcuts={false}
+          backgroundColor="#c8c8c8"
+          styles={styles}
+          autoFit
+        >
           <Marker position={{ lat: 48.137154, lng: 11.576124 }} />
           <MyMarker position={{ lat: 52.520008, lng: 13.404954 }} />
           <Overlay position={{ lat: 53.551086, lng: 9.993682 }}>
@@ -25,15 +247,14 @@ function App() {
                 backgroundColor: "#fff",
                 borderRadius: "5px",
                 padding: "10px",
-                boxShadow: "5px 5px 10px #000",
+                boxShadow: "5px 5px 10px #0005",
               }}
             >
-              {text}
+              Moin!
             </div>
           </Overlay>
         </GoogleMap>
       </Wrapper>
-      <input value={text} onChange={(ev) => setText(ev.target.value)} />
     </div>
   );
 }
