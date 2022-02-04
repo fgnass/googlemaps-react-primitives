@@ -1,4 +1,6 @@
-# googlemaps-react-primitives 📍
+# googlemaps-react-primitives
+
+📍 Google Maps primitives for React
 
 ![screenshot](screenshot.png)
 
