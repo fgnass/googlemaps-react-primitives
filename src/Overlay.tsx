@@ -9,7 +9,7 @@ interface OverlayView extends google.maps.OverlayView {
   moveTo(position: google.maps.LatLngLiteral): void;
 }
 
-interface OverlayOptions {
+export interface OverlayOptions {
   position: google.maps.LatLngLiteral;
   preventMapHits?: boolean;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { GoogleMap, Marker, Overlay } from "./src";
