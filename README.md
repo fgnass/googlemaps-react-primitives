@@ -4,6 +4,8 @@
 
 ![screenshot](screenshot.png)
 
+[![Edit googlemaps-react-primitives](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/clever-bush-godk3)
+
 ## Rationale
 
 When looking for a way to add Google Maps to a React application you'll find [tons](https://www.npmjs.com/package/google-map-react) of [different](https://www.npmjs.com/package/react-google-maps) solutions and [libraries](https://www.npmjs.com/package/@react-google-maps/api).
@@ -16,6 +18,13 @@ The idea behind this module is to stick to [Google's official guide for React](h
 - Super lightweight
 - Tree shakeable
 - Works with @googlemaps/react-wrapper
+
+# Installation
+
+```
+npm install @googlemaps/react-wrapper googlemaps-react-primitives
+npm install -D @types/google.maps
+```
 
 # Usage
 
