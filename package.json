@@ -14,7 +14,8 @@
   "main": "lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@googlemaps/typescript-guards": "^1.0.5",
