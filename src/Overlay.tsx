@@ -1,11 +1,11 @@
-import { ReactElement, useEffect, useRef } from "react";
+import { ReactElement, ReactPortal, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 
 import { useMap } from "./GoogleMap";
 import { useMapEffect } from "./mapUtils";
 
 interface OverlayView extends google.maps.OverlayView {
-  updateContent(content: ReactElement): void;
+  render(content: ReactElement): ReactPortal | undefined;
   moveTo(position: google.maps.LatLngLiteral): void;
 }
 
@@ -23,10 +23,9 @@ function createOverlayClass() {
   {
     position: google.maps.LatLngLiteral;
     containerDiv: HTMLDivElement;
-    content: ReactElement;
-    constructor(content: ReactElement, options: OverlayOptions) {
+
+    constructor(options: OverlayOptions) {
       super();
-      this.content = content;
       this.position = options.position;
       this.containerDiv = document.createElement("div");
       this.containerDiv.style.position = "absolute";
@@ -36,9 +35,10 @@ function createOverlayClass() {
       }
     }
 
-    updateContent(content: ReactElement) {
-      this.content = content;
-      ReactDOM.render(content, this.containerDiv);
+    render(content: ReactElement) {
+      if (this.containerDiv) {
+        return ReactDOM.createPortal(content, this.containerDiv);
+      }
     }
 
     moveTo(position: google.maps.LatLngLiteral) {
@@ -50,13 +50,11 @@ function createOverlayClass() {
     /** Called when the popup is added to the map. */
     onAdd() {
       this.getPanes()!.floatPane.appendChild(this.containerDiv);
-      ReactDOM.render(this.content, this.containerDiv);
     }
 
     /** Called when the popup is removed from the map. */
     onRemove() {
       if (this.containerDiv.parentElement) {
-        ReactDOM.unmountComponentAtNode(this.containerDiv);
         this.containerDiv.parentElement.removeChild(this.containerDiv);
       }
     }
@@ -88,9 +86,18 @@ function createOverlayClass() {
 
 let OverlayView: ReturnType<typeof createOverlayClass>;
 
-function createOverlay(content: ReactElement, options: OverlayOptions) {
+function createOverlay(
+  map: google.maps.Map,
+  options: OverlayOptions,
+  callback: (view: OverlayView) => void
+) {
   if (!OverlayView) OverlayView = createOverlayClass();
-  return new OverlayView(content, options);
+  const view = new OverlayView(options);
+  view.setMap(map);
+  callback(view);
+  return () => {
+    view.setMap(null);
+  };
 }
 
 export function Overlay({
@@ -101,31 +108,19 @@ export function Overlay({
   children: ReactElement;
 }) {
   const map = useMap();
-  const overlayView = useRef<OverlayView>();
+  const [view, setView] = useState<OverlayView>();
 
   useEffect(() => {
-    if (!overlayView.current && map) {
-      const ov = createOverlay(children, { position, preventMapHits });
-      overlayView.current = ov;
-      ov.setMap(map);
-      // Remove marker from map on unmount
-      return () => {
-        ov.setMap(null);
-      };
+    if (!view && map) {
+      return createOverlay(map, { position, preventMapHits }, setView);
     }
-  }, [overlayView, map]);
-
-  useEffect(() => {
-    if (overlayView.current) {
-      overlayView.current.updateContent(children);
-    }
-  }, [children]);
+  }, [map]);
 
   useMapEffect(() => {
-    if (overlayView.current) {
-      overlayView.current.moveTo(position);
+    if (view) {
+      view.moveTo(position);
     }
   }, [position]);
 
-  return null;
+  return view?.render(children) ?? null;
 }
