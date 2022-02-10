@@ -26,6 +26,8 @@ const defaultOptions = {
 interface Props extends google.maps.MapOptions {
   className?: string;
   style?: CSSProperties;
+  onClick?: (ev: google.maps.MapMouseEvent) => void;
+  onIdle?: (map: google.maps.Map) => void;
   children?: ReactNode;
   autoFit?: boolean;
 }
@@ -33,6 +35,8 @@ interface Props extends google.maps.MapOptions {
 export function GoogleMap({
   className,
   style,
+  onClick,
+  onIdle,
   autoFit,
   children,
   ...options
@@ -55,6 +59,22 @@ export function GoogleMap({
       map.setOptions(options);
     }
   }, [map, options]);
+
+  useEffect(() => {
+    if (map) {
+      ["click", "idle"].forEach((eventName) =>
+        google.maps.event.clearListeners(map, eventName)
+      );
+
+      if (onClick) {
+        map.addListener("click", onClick);
+      }
+
+      if (onIdle) {
+        map.addListener("idle", () => onIdle(map));
+      }
+    }
+  }, [map, onClick, onIdle]);
 
   useEffect(() => {
     if (map && autoFit) {
