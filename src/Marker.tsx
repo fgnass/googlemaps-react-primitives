@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react";
+import { useMapContext } from "./MapContext";
 
-import { useMap } from "./GoogleMap";
 import { useMapEffect } from "./mapUtils";
 
 export function Marker(props: google.maps.MarkerOptions) {
   const [marker, setMarker] = useState<google.maps.Marker>();
-  const map = useMap();
+  const { map, addMarker, removeMarker } = useMapContext();
   useEffect(() => {
     if (!marker) {
-      setMarker(new google.maps.Marker({ ...props, map }));
+      const m = new google.maps.Marker({ ...props, map });
+      addMarker(m);
+      setMarker(m);
+      // remove marker from map on unmount
+      return () => {
+        removeMarker(m);
+      };
     }
-
-    // remove marker from map on unmount
-    return () => {
-      if (marker) {
-        marker.setMap(null);
-      }
-    };
-  }, [marker]);
+  }, []);
 
   useMapEffect(() => {
     if (marker) {

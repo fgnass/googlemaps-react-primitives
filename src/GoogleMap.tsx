@@ -1,22 +1,15 @@
 import React, {
-  createContext,
   CSSProperties,
   ReactNode,
-  useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 
 import { useMapEffect } from "./mapUtils";
 
-const MapContext = createContext<google.maps.Map | undefined>(undefined);
-
-export function useMap() {
-  const map = useContext(MapContext);
-  if (!map) throw new Error("No map found in context");
-  return map;
-}
+import { MapContext } from "./MapContext";
 
 const defaultOptions = {
   center: { lat: 0, lng: 0 },
@@ -42,7 +35,7 @@ export function GoogleMap({
   ...options
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<google.maps.Map>();
+  const [map, setMap] = useState<google.maps.Map | null>(null);
   useEffect(() => {
     if (ref.current && !map) {
       setMap(
@@ -76,26 +69,41 @@ export function GoogleMap({
     }
   }, [map, onClick, onIdle]);
 
+  const bounds = useMemo(() => new google.maps.LatLngBounds(), []);
+  const markers = useMemo(() => new Set(), []);
+
+  const ctx = useMemo(
+    () => ({
+      map,
+      addMarker(marker: google.maps.Marker) {
+        markers.add(marker);
+        marker.setMap(map);
+        const position = marker.getPosition();
+        if (position) bounds.extend(position);
+      },
+      removeMarker(marker: google.maps.Marker) {
+        markers.delete(marker);
+        marker.setMap(null);
+      },
+      extendBounds(
+        point?: google.maps.LatLng | google.maps.LatLngLiteral | null
+      ) {
+        if (point) bounds.extend(point);
+      },
+    }),
+    [map]
+  );
+
   useEffect(() => {
-    if (map && autoFit) {
-      const bounds = new google.maps.LatLngBounds();
-      React.Children.forEach(children, (child) => {
-        if (React.isValidElement(child)) {
-          const { position } = child.props;
-          if (position) {
-            bounds.extend(position);
-          }
-        }
-      });
-      if (!bounds.isEmpty()) {
-        map.fitBounds(bounds);
-      }
+    if (autoFit && map && !bounds.isEmpty()) {
+      map.fitBounds(bounds);
     }
   }, [map, autoFit]);
+
   return (
     <>
       <div ref={ref} className={className} style={style} />
-      {map && <MapContext.Provider value={map}>{children}</MapContext.Provider>}
+      {map && <MapContext.Provider value={ctx}>{children}</MapContext.Provider>}
     </>
   );
 }

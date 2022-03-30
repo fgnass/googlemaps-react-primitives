@@ -1,7 +1,7 @@
-import { ReactElement, ReactPortal, useEffect, useRef, useState } from "react";
+import { ReactElement, ReactPortal, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import { useMapContext } from "./MapContext";
 
-import { useMap } from "./GoogleMap";
 import { useMapEffect } from "./mapUtils";
 
 interface OverlayView extends google.maps.OverlayView {
@@ -107,11 +107,12 @@ export function Overlay({
 }: OverlayOptions & {
   children: ReactElement;
 }) {
-  const map = useMap();
+  const { map, extendBounds } = useMapContext();
   const [view, setView] = useState<OverlayView>();
 
   useEffect(() => {
     if (!view && map) {
+      extendBounds(position);
       return createOverlay(map, { position, preventMapHits }, setView);
     }
   }, [map]);
@@ -120,7 +121,7 @@ export function Overlay({
     if (view) {
       view.moveTo(position);
     }
-  }, [position]);
+  }, [view, position]);
 
   return view?.render(children) ?? null;
 }
