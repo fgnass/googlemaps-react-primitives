@@ -70,7 +70,7 @@ function MyMap() {
 }
 ```
 
-You can use this primitive to create a customized markers, for example to draw a custom SVG path:
+You can use this primitive to create a customized markers, for example to draw a custom path:
 
 ```tsx
 function MyMarker(props: google.maps.MarkerOptions) {
@@ -86,6 +86,26 @@ function MyMarker(props: google.maps.MarkerOptions) {
         anchor: new google.maps.Point(9, 22),
       }}
     />
+  );
+}
+```
+
+By default, Google markers can only provide a single SVG path. To allow more complex icons, this library includes a utility component to render complete SVGs:
+
+```tsx
+import { GoogleMap, SvgMarker } from "googlemaps-react-primitives";
+
+function MyMap() {
+  return (
+    <GoogleMap>
+      <SvgMarker
+        position={{ lat: 48.864716, lng: 2.349014 }}
+        svg={`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#e74c3c" d="M12 0a8 8 0 0 0-7 12l7 12 7-12a8 8 0 0 0-7-12zm0 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8z" />
+              <path fill="#c0392b" d="M12 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z" />
+            </svg>`}
+      />
+    </GoogleMap>
   );
 }
 ```
