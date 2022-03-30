@@ -2,6 +2,7 @@ import React, {
   CSSProperties,
   ReactNode,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -36,7 +37,7 @@ export function GoogleMap({
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (ref.current && !map) {
       setMap(
         new window.google.maps.Map(ref.current, {
