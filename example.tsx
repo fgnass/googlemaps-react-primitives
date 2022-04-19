@@ -1,7 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
-import { GoogleMap, Marker, SvgMarker, Overlay } from "./src";
+import {
+  GoogleMap,
+  Marker,
+  SvgMarker,
+  Overlay,
+  Polyline,
+  EncodedPolyline,
+} from "./src";
 
 const styles = [
   {
@@ -224,6 +231,7 @@ function App() {
   return (
     <div style={{ width: "80vw", margin: "10vh auto" }}>
       <Wrapper
+        libraries={["geometry"]}
         apiKey={import.meta.env.VITE_API_KEY}
         render={renderLoadingStatus}
       >
@@ -262,6 +270,14 @@ function App() {
               Moin!
             </div>
           </Overlay>
+          <Polyline
+            path={[
+              { lat: 48.137154, lng: 11.576124 },
+              { lat: 48.210033, lng: 16.363449 },
+            ]}
+            strokeColor="red"
+          />
+          <EncodedPolyline locations="ayp_I}cypAgkhElgyS" strokeColor="teal" />
         </GoogleMap>
       </Wrapper>
     </div>

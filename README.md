@@ -150,6 +150,48 @@ function MyOverlay({ position, text }: Props) {
 
 **Note:** You can pass the `preventMapHits` property to stop clicks etc. from bubbling up to the map.
 
+## Polylines
+
+You can draw lines on the map using the `<Polyline>` primitive:
+
+```tsx
+import { GoogleMap, Polyline } from "googlemaps-react-primitives";
+
+function MyMap() {
+  return (
+    <GoogleMap>
+      <Polyline
+        path={[
+          { lat: 48.137154, lng: 11.576124 },
+          { lat: 48.210033, lng: 16.363449 },
+        ]}
+        strokeColor="red"
+      />
+    </GoogleMap>
+  );
+}
+```
+
+## Encoded Polylines
+
+If you want to draw [encoded](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) polylines, you can use the `<EncodedPolyline />` primitive.
+
+**NOTE:** Decoding requires the `geometry` library to be loaded:
+
+```tsx
+import { GoogleMap, EncodedPolyline } from "googlemaps-react-primitives";
+
+function MyMap() {
+  return (
+    <GoogleMap libraries={["geometry"]}>
+      <EncodedPolyline unescape location="ayp_I}cypAgkhElgyS" />
+    </GoogleMap>
+  );
+}
+```
+
+**NOTE:** Polyline strings returned by the Google Directions API contain escaped backslashes. In order to use them directly you can pass the `unescape` prop.
+
 ## Auto-fitting the map view
 
 When placing markers or overlays on the map you can pass the `autoFit` prop in order to automatically center and zoom the map so that all nested markers and overlays are visible in the initial viewport.
