@@ -247,9 +247,15 @@ function App() {
           onClick={console.log}
           autoFit
         >
-          <Marker position={{ lat: 48.137154, lng: 11.576124 }} />
-          <MyMarker position={{ lat: 52.520008, lng: 13.404954 }} />
-          <Marker position={{ lat: 48.210033, lng: 16.363449 }} />
+          <Marker
+            position={{lat: 48.137154, lng: 11.576124}}
+            onClick={(e: any) => console.log("Marker clicked", e)}
+          />
+          <MyMarker position={{lat: 52.520008, lng: 13.404954}}/>
+          <Marker
+            position={{lat: 48.210033, lng: 16.363449}}
+            onClick={(e: any) => console.log("Marker clicked", e)}
+          />
           <SvgMarker
             position={{ lat: 48.864716, lng: 2.349014 }}
             svg={`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
