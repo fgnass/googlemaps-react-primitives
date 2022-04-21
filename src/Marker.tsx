@@ -3,13 +3,25 @@ import { useMapContext } from "./MapContext";
 
 import { useMapEffect } from "./mapUtils";
 
-export function Marker(props: google.maps.MarkerOptions) {
+interface Props extends google.maps.MarkerOptions {
+  onClick?: Function;
+}
+
+export function Marker({
+  onClick,
+  ...options
+}: Props) {
   const marker = useRef<google.maps.Marker>();
   const { map, addMarker, removeMarker } = useMapContext();
   useEffect(() => {
     if (!marker.current) {
-      marker.current = new google.maps.Marker({ ...props, map });
+      marker.current = new google.maps.Marker({ ...options, map });
       addMarker(marker.current);
+
+      if (onClick) {
+        marker.current.addListener("click", () => onClick(marker.current));
+      }
+
       return () => {
         if (marker.current) {
           removeMarker(marker.current);
@@ -21,9 +33,9 @@ export function Marker(props: google.maps.MarkerOptions) {
 
   useMapEffect(() => {
     if (marker.current) {
-      marker.current.setOptions(props);
+      marker.current.setOptions(options);
     }
-  }, [marker.current, props]);
+  }, [marker.current, options]);
 
   return null;
 }
