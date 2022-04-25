@@ -4,24 +4,16 @@ import { useMapContext } from "./MapContext";
 import { useMapEffect } from "./mapUtils";
 
 interface Props extends google.maps.MarkerOptions {
-  onClick?: Function;
+  onClick?: (ev: google.maps.MapMouseEvent) => void;
 }
 
-export function Marker({
-  onClick,
-  ...options
-}: Props) {
+export function Marker({ onClick, ...options }: Props) {
   const marker = useRef<google.maps.Marker>();
   const { map, addMarker, removeMarker } = useMapContext();
   useEffect(() => {
     if (!marker.current) {
       marker.current = new google.maps.Marker({ ...options, map });
       addMarker(marker.current);
-
-      if (onClick) {
-        marker.current.addListener("click", () => onClick(marker.current));
-      }
-
       return () => {
         if (marker.current) {
           removeMarker(marker.current);
@@ -30,6 +22,15 @@ export function Marker({
       };
     }
   }, []);
+
+  useEffect(() => {
+    if (marker.current) {
+      google.maps.event.clearListeners(marker, "click");
+      if (onClick) {
+        marker.current.addListener("click", onClick);
+      }
+    }
+  }, [marker.current, onClick]);
 
   useMapEffect(() => {
     if (marker.current) {
