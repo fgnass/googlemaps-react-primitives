@@ -1,5 +1,5 @@
 import React from "react";
-import { Marker } from "./Marker";
+import { Marker } from "./Marker.js";
 
 export type SvgMarkerProps = Omit<google.maps.MarkerOptions, "icon"> & {
   svg: string;

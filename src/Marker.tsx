@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
-import { useMapContext } from "./MapContext";
+import { useMapContext } from "./MapContext.js";
 
-import { useMapEffect } from "./mapUtils";
+import { useMapEffect } from "./mapUtils.js";
 
 interface Props extends google.maps.MarkerOptions {
   onClick?: (ev: google.maps.MapMouseEvent) => void;

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
-import { useMapContext } from "./MapContext";
+import { useMapContext } from "./MapContext.js";
 
-import { useMapEffect } from "./mapUtils";
+import { useMapEffect } from "./mapUtils.js";
 
 export function Polyline(props: google.maps.PolylineOptions) {
   const polyline = useRef<google.maps.Polyline>();

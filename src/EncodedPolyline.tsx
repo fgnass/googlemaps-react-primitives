@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Polyline } from "./Polyline";
+import { Polyline } from "./Polyline.js";
 
 type Props = Omit<google.maps.PolylineOptions, "path"> & {
   locations: string;

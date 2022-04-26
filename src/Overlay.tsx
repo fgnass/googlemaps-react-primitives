@@ -1,8 +1,8 @@
 import { ReactElement, ReactPortal, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { useMapContext } from "./MapContext";
+import { useMapContext } from "./MapContext.js";
 
-import { useMapEffect } from "./mapUtils";
+import { useMapEffect } from "./mapUtils.js";
 
 interface OverlayView extends google.maps.OverlayView {
   render(content: ReactElement): ReactPortal | undefined;

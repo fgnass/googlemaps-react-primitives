@@ -8,9 +8,9 @@ import React, {
   useState,
 } from "react";
 
-import { useMapEffect } from "./mapUtils";
+import { useMapEffect } from "./mapUtils.js";
 
-import { MapContext } from "./MapContext";
+import { MapContext } from "./MapContext.js";
 
 const defaultOptions = {
   center: { lat: 0, lng: 0 },
