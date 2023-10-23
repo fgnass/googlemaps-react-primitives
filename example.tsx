@@ -1,5 +1,7 @@
+/// <reference types="vite/client" />
+
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import {
   GoogleMap,
@@ -306,4 +308,8 @@ function MyMarker(props: google.maps.MarkerOptions) {
   );
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

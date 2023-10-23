@@ -36,15 +36,16 @@ export function GoogleMap({
   ...options
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<google.maps.Map>();
   const [map, setMap] = useState<google.maps.Map | null>(null);
   useLayoutEffect(() => {
-    if (ref.current && !map) {
-      setMap(
-        new window.google.maps.Map(ref.current, {
-          ...defaultOptions,
-          ...options,
-        })
-      );
+    if (ref.current && !map && !mapRef.current) {
+      const newMap = new window.google.maps.Map(ref.current, {
+        ...defaultOptions,
+        ...options,
+      });
+      mapRef.current = newMap;
+      setMap(newMap);
     }
   }, [ref, map]);
 

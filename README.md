@@ -217,7 +217,7 @@ When you write custom components that need to access the map instance, you can u
 
 When you check out the repository you can view the example using the following command:
 
-`VITE_API_KEY=<yourApiKey> npx vite`
+`VITE_API_KEY=<yourApiKey> npm start`
 
 # License
 
